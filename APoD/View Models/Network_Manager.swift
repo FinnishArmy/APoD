@@ -7,12 +7,15 @@
 
 import Foundation
 import Combine
+import UIKit
+import SwiftUI
 
 
 // Creating an network manager which is an observable object so we can use it in UI views
 class network_manager: ObservableObject {
     
     @Published var metaData = MetaData()
+    @Published var image: UIImage? = nil
     
     // https://stackoverflow.com/questions/59002502/ios-swift-combine-cancel-a-setanycancellable
     private var subscriptions = Set<AnyCancellable>()
@@ -34,6 +37,24 @@ class network_manager: ObservableObject {
             }
             .receive(on: RunLoop.main)
             .assign(to: \.metaData, on: self)
+            .store(in: &subscriptions)
+        
+            // Fetch image only if we have an updated metadata
+        $metaData
+            .filter { $0.url != nil }
+            .map { metaData -> URL in
+                return metaData.url!
+            }.flatMap { (url) in
+                URLSession.shared.dataTaskPublisher(for: url)
+                    .map(\.data)
+                    .catch({error in
+                        return Just(Data())
+                    })
+            }.map { (out) -> UIImage? in
+                UIImage(data: out)
+            }
+            .receive(on: RunLoop.main)
+            .assign(to: \.image, on: self)
             .store(in: &subscriptions)
             // Handle return values
 //            .sink(receiveCompletion: { (completion) in

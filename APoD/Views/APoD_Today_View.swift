@@ -11,16 +11,30 @@ struct APoD_Today_View: View {
     // Use network manager
     @ObservedObject var manager = network_manager()
     var body: some View {
-        VStack {
-            Text(manager.metaData.date)
-            Text(manager.metaData.title)
-            Text(manager.metaData.description)
+        VStack(alignment: .center, spacing: 20) {
+            if manager.image != nil {
+                Image(uiImage: self.manager.image!)
+                    .resizable()
+                    .scaledToFit()
+            }
+            ScrollView {
+                VStack(alignment: .center, spacing: 20) {
+                    Text(manager.metaData.date).font(.title)
+                    Text(manager.metaData.title).font(.headline)
+                    Text(manager.metaData.description)
+                }
+            }.padding()
         }
     }
 }
 
+// Dummy data
 struct APoD_Today_View_Previews: PreviewProvider {
     static var previews: some View {
-        APoD_Today_View()
+        let view = APoD_Today_View()
+        view.manager.metaData = MetaData.createDefault()
+        view.manager.image = UIImage(named: "preview")
+        
+        return view
     }
 }

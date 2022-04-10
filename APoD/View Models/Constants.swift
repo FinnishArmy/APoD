@@ -10,7 +10,7 @@ import Foundation
 // This is where we keep the API key , ect.
 struct Constants {
     // Constants.key
-    static let key = "DEMO_KEY"
+    static let key = "WcljHu9Xh5FgBtxOLqVkvyPOznh35f8nJnrSrQzS"
     
     // Our base url without the key
     static let baseURL = "https://api.nasa.gov/planetary/apod"
