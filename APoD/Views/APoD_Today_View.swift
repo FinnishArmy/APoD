@@ -11,19 +11,22 @@ struct APoD_Today_View: View {
     // Use network manager
     @ObservedObject var manager = network_manager()
     var body: some View {
-        VStack(alignment: .center, spacing: 20) {
-            if manager.image != nil {
-                Image(uiImage: self.manager.image!)
-                    .resizable()
-                    .scaledToFit()
-            }
-            ScrollView {
-                VStack(alignment: .center, spacing: 20) {
-                    Text(manager.metaData.date).font(.title)
-                    Text(manager.metaData.title).font(.headline)
-                    Text(manager.metaData.description)
+        ZStack {
+            Color.black.ignoresSafeArea()
+            VStack(alignment: .center, spacing: 20) {
+                if manager.image != nil {
+                    Image(uiImage: self.manager.image!)
+                        .resizable()
+                        .scaledToFit()
                 }
-            }.padding()
+                ScrollView {
+                    VStack(alignment: .center, spacing: 20) {
+                        Text(manager.metaData.date).font(.title).foregroundColor(.white)
+                        Text(manager.metaData.title).font(.headline).foregroundColor(.white)
+                        Text(manager.metaData.description).foregroundColor(.white)
+                    }
+                }.padding()
+            }
         }
     }
 }
