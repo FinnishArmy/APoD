@@ -11,7 +11,11 @@ struct APoD_Today_View: View {
     // Use network manager
     @ObservedObject var manager = network_manager()
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text(manager.metaData.date)
+            Text(manager.metaData.title)
+            Text(manager.metaData.description)
+        }
     }
 }
 
