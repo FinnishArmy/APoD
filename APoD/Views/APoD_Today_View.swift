@@ -10,10 +10,24 @@ import SwiftUI
 struct APoD_Today_View: View {
     // Use network manager
     @ObservedObject var manager = network_manager()
+    @State private var switchDate: Bool = false
+    
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
             VStack(alignment: .center, spacing: 20) {
+                Button(action: {
+                    self.switchDate.toggle()
+                }) {
+                    Image(systemName: "calendar")
+                    Text("Change Day")
+                }
+                .padding(.trailing)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .popover(isPresented: $switchDate) {
+                    SelectDateView(manager: self.manager)
+                }
+                
                 if manager.image != nil {
                     Image(uiImage: self.manager.image!)
                         .resizable()
